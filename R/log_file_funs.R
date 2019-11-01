@@ -11,6 +11,8 @@
 #' 
 #' @param auto_create Logical indicating if the logfile should be created if not found
 #' 
+#' @param global_name Environment label, which will be used to also find later...
+#' 
 #' @return 
 #' Sets the global environment variable to the file path... which we then simply
 #' call as \code{Sys.getenv("whale_log")}. NOTE that you can change this variable name to whatever...
@@ -33,7 +35,7 @@
 #'
 #' @export
 
-logfile.set_path <- function(file_location = NULL, auto_create = FALSE, ...){
+logfile.set_path <- function(file_location = NULL, auto_create = FALSE, global_name = "whale_log", ...){
   
   if(is.null(file_location) || !file.exists(file_location)){
     
@@ -62,7 +64,30 @@ logfile.set_path <- function(file_location = NULL, auto_create = FALSE, ...){
   }
   # setting globally... change whale_log to whatever, but know that we are going 
   # to use Sys.getenv(whatever_name) to retrieve the path later...
-  Sys.setenv(whale_log = base::normalizePath(file_location))
+  e_val <- setNames(list(base::normalizePath(file_location)), global_name)
+  
+  do.call(Sys.setenv, e_val)
   
 } 
+
+
+
+#' Finding the logfile 
+#' 
+#' \code{logfile.get_path}
+#' 
+#' If \code{logfile.set_path} has been called, this will find the variable globally,
+#' if not it returns NULL, because we don't want it breaking our parser
+#' 
+#' @examples 
+#' logfile.get_path()
+#' 
+logfile.get_path <- function(global_name = "whale_log"){
+  val <- Sys.getenv(global_name)
+  if(!nchar(val)){
+    NULL
+  }else {
+    val
+  }
+}
 
