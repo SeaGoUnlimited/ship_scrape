@@ -115,7 +115,7 @@
 #' 
 #' @export
 #' 
-whale.data_labels <- function(assign_as = "param_table", file_location = "column_names.rds", ...){
+whale.data_labels <- function(assign_as = "param_table", file_location = "inst/data/column_names.rds", ...){
   library(xml2)
   library(stringi)
   library(dplyr)
