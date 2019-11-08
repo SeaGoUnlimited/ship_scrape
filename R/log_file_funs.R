@@ -91,3 +91,45 @@ logfile.get_path <- function(global_name = "whale_log"){
   }
 }
 
+
+#' Function to update the logs
+#' 
+#' 
+#' The logfile is what will track and update which links have been visited and 
+#' already read-in/parsed to our tables. 
+#' 
+#' The advantage of this approach is that we:
+#' \enumerate{
+#'   \item remove the potential of duplicating data in the master table
+#'   \item reduce the number of requests we make to the server
+#'   \item apply our parsing function to only data not already present, so much less time/computational requirement
+#' }
+#' 
+#' 
+
+
+logfile.update <- function(log_file_path = NULL, url_path = NULL, has_been_read = FALSE, date_checked = Sys.time(),...){
+  
+  # Need the file path to write to, can set with logfile.set_path or provide any filepath
+  if(is.null(log_file_path)){
+    log_file_path <- logfile.get_path()
+  }
+  
+  if(!is.null(date_checked) && !inherits(date_checked, "POSIXct")){
+    date_checked <- as.POSIXct(date_checked, "%Y-%m-%d %H:%M:%S")
+  }
+  
+  df <- data.frame(url_path = url_path, has_been_read = has_been_read, date_checked = date_checked)
+  
+}
+
+
+
+logfile.last_checked_url <- function(log_data = NULL){
+  log_data[nrow(log_data), 'url_path']
+}
+
+
+logfile.next_url <- function(...){
+  
+}

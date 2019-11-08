@@ -109,4 +109,15 @@ lynx.cmd <- function(urls = NULL, recursive = TRUE, ...){
 # }
 # 
 # 
-# 
+
+
+curl.parse_logs <- function(urls){
+  results <- list()
+  success <- function(x){
+    results <<- append(results, list(x))
+  }
+  failure <- function(str){
+    cat(paste("Failed request:", str), file = stderr())
+  }
+  
+}
